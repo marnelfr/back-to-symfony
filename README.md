@@ -1,4 +1,4 @@
-# Symfony fundamentals
+# Symfony 6
 ## Bundles
 Bundle are Symfony plugins. They're normal PHP packages,
 except that they plug in into Symfony. And the main 
@@ -28,7 +28,12 @@ function that returns friendly "2 hours ago"-type messages.
 
 ## Http Client
 Installation: ``composer req symfony/http-client``\
-Need to perform some requests, this library is there for you.
+Need to perform some requests, this library is there 
+for you.\
+Once the library is installed, the **FrameworkBundle
+registers a service** called **HttpClientInterface** which uses 
+a PHP class from ``symfony/http-client``.
+
 
 
 

@@ -30,14 +30,12 @@ class HomeController extends AbstractController
 
     #[Route('browse/{slug?}', name: 'browse')]
     public function browse(string $slug = null) {
-        $genres = [
-            'pop', 'rock', 'heavy-metal'
-        ];
-        $actual = u($slug)->replace('-', ' ')->title(true) ?: null;
+        $mixes = $this->getMixes();
+        $genre = u($slug)->replace('-', ' ')->title(true) ?: null;
 
         return $this->render('home/browse.html.twig', [
-            'genres' => $genres,
-            'actual' => $actual,
+            'mixes' => $mixes,
+            'genre' => $genre,
         ]);
     }
 
@@ -46,6 +44,29 @@ class HomeController extends AbstractController
         $name = !!$name ? $name : 'wold';
         $name = u($name)->title();
         return new Response('Hello ' . $name);
+    }
+
+    private function getMixes() {
+        return [
+            [
+                'title' => 'PB & James',
+                'tranckCount' => 14,
+                'genre' => 'Rock',
+                'createdAt' => new \DateTime('2021-10-02'),
+            ],
+            [
+                'title' => 'In love with you',
+                'tranckCount' => 8,
+                'genre' => 'Heavy Metal',
+                'createdAt' => new \DateTime('2022-04-28'),
+            ],
+            [
+                'title' => 'Sprics grills',
+                'tranckCount' => 10,
+                'genre' => 'Pop',
+                'createdAt' => new \DateTime('2019-05-21'),
+            ]
+        ];
     }
 
 }

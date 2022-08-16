@@ -8,6 +8,10 @@ as services, so they can be used via **autowiring**.
 Thanks to the Flex recipes attached to them, they are enable 
 automatically in ``config/bundles.php``
 
+## UX Turbo
+Installation: ``composer req symfony/ux-turbo``\
+Turns our app into an single page app. Every request is 
+then make by ajax.
 
 ## Debug
 - ``php bin/console debug:autowiring`` returns the list 
@@ -18,6 +22,13 @@ of every classes that can be autowired.
 functions, filters, tests and global variable in twig.
 
 ## KnpTimeBundle
-give us the ``ago`` filter and the ``time_diff(date_time)``
+Installation: ``composer require knplabs/knp-time-bundle``\
+Give us the ``ago`` filter and the ``time_diff(date_time)``
 function that returns friendly "2 hours ago"-type messages.
+
+## Http Client
+Installation: ``composer req symfony/http-client``\
+Need to perform some requests, this library is there for you.
+
+
 

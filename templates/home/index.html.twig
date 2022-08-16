@@ -25,8 +25,8 @@
                         </g>
                         <circle id="Oval" stroke="#979797" cx="248" cy="248" r="235"></circle>
                         <circle id="Oval" stroke="#979797" cx="248" cy="248" r="215"></circle>
-                        <circle id="Oval" stroke="#979797" cx="248" cy="248" r="195"></circle>
-                        <circle id="Oval" stroke="#979797" cx="248" cy="248" r="175"></circle>
+                        <circle id="Oval" stroke="#109797" cx="248" cy="248" r="195"></circle>
+                        <circle id="Oval" stroke="#979107" cx="248" cy="248" r="175"></circle>
                         <circle id="Oval" stroke="#979797" cx="248" cy="248" r="155"></circle>
                     </g>
                 </g>
@@ -35,9 +35,9 @@
         <div class="col-12 col-md-8 ps-5">
             <h2 class="mb-4">10 songs (30 minutes of 60 still available)</h2>
             {% for index, track in tracks %}
-                <div class="song-list">
+                <div class="song-list" {{ stimulus_controller('song-controls', {apiUrl: path('api_song', {id: index})}) }}>
                     <div class="d-flex mb-3">
-                        <a href="#">
+                        <a href="#" {{ stimulus_action('song-controls', 'play') }}>
                             <i class="fas fa-play me-3"></i>
                         </a>
                         <span class="song-details">{{ track.title }} - {{ track.author }}</span>

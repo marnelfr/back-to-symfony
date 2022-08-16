@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SongController extends AbstractController
 {
 
-    #[Route('/api/songs/{id<\d+>}', methods: ['GET'])]
+    #[Route('/api/songs/{id<\d+>}', name: 'api_song', methods: ['GET'])]
     public function show(int $id, LoggerInterface $logger): JsonResponse {
         $logger->info("The song of id {id} has been requested", ['id' => $id]);
         return new JsonResponse([

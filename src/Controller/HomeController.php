@@ -34,6 +34,7 @@ class HomeController extends AbstractController
             'pop', 'rock', 'heavy-metal'
         ];
         $actual = u($slug)->replace('-', ' ')->title(true) ?: null;
+
         return $this->render('home/browse.html.twig', [
             'genres' => $genres,
             'actual' => $actual,

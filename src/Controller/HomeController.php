@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use function Symfony\Component\String\u;
 
@@ -30,10 +32,13 @@ class HomeController extends AbstractController
     }
 
     #[Route('browse/{slug?}', name: 'browse')]
-    public function browse(HttpClientInterface $client, string $slug = null) {
-        $response = $client->request('GET', 'https://raw.githubusercontent.com/SymfonyCasts/vinyl-mixes/main/mixes.json');
-        $mixes = $response->toArray();
-
+    public function browse(HttpClientInterface $client, CacheInterface $cache, string $slug = null) {
+        $url = 'https://raw.githubusercontent.com/SymfonyCasts/vinyl-mixes/main/mixes.json';
+        $mixes = $cache->get('mixed.data.list', function(CacheItemInterface $cacheItem) use ($client, $url) {
+            $cacheItem->expiresAfter(20);
+            $response = $client->request('GET', $url);
+            return $response->toArray();
+        });
         $genre = u($slug)->replace('-', ' ')->title(true) ?: null;
 
         return $this->render('home/browse.html.twig', [
@@ -47,29 +52,6 @@ class HomeController extends AbstractController
         $name = !!$name ? $name : 'wold';
         $name = u($name)->title();
         return new Response('Hello ' . $name);
-    }
-
-    private function getMixes() {
-        return [
-            [
-                'title' => 'PB & James',
-                'tranckCount' => 14,
-                'genre' => 'Rock',
-                'createdAt' => new \DateTime('2021-10-02'),
-            ],
-            [
-                'title' => 'In love with you',
-                'tranckCount' => 8,
-                'genre' => 'Heavy Metal',
-                'createdAt' => new \DateTime('2022-04-28'),
-            ],
-            [
-                'title' => 'Sprics grills',
-                'tranckCount' => 10,
-                'genre' => 'Pop',
-                'createdAt' => new \DateTime('2019-05-21'),
-            ]
-        ];
     }
 
 }

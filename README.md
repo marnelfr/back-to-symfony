@@ -90,7 +90,14 @@ of our environment.
 public function __construct(private HttpClientInterface $client, private CacheInterface $cache) {}
 ````
 
-
+## Parameters
+The container don't only contains services. It also contains 
+parameters that can be display using 
+``debug:container --parameters``.\
+We can add custom parameters thanks to the ``parameters`` key
+inside a config file. Parameters (``kernel.project_dir`` in instance) 
+can be used in our config file with the syntax 
+``'%kernel.project_dir%'``.
 
 
 

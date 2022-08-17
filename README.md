@@ -91,13 +91,22 @@ public function __construct(private HttpClientInterface $client, private CacheIn
 ````
 
 ## Parameters
-The container don't only contains services. It also contains 
+The container doesn't only contain services. It also contains 
 parameters that can be display using 
 ``debug:container --parameters``.\
 We can add custom parameters thanks to the ``parameters`` key
-inside a config file. Parameters (``kernel.project_dir`` in instance) 
+inside the ``services.yaml`` config file. Parameters (``kernel.project_dir`` in instance) 
 can be used in our config file with the syntax 
 ``'%kernel.project_dir%'``.
+
+The ``services.yaml`` config file can also be used set custom
+services definitions when explicit configuration is needed:
+````yaml
+services:
+    App\Service\MixRepository:
+        bind:
+            $isDebug: '%kernel.debug%'
+````
 
 
 

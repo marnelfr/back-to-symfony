@@ -9,12 +9,16 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class MixRepository
 {
 
-    public function __construct(private HttpClientInterface $client, private CacheInterface $cache) {}
+    public function __construct(
+        private HttpClientInterface $client,
+        private CacheInterface $cache,
+        private bool $isDebug
+    ) {}
 
     public function findAll(): array {
         $url = 'https://raw.githubusercontent.com/SymfonyCasts/vinyl-mixes/main/mixes.json';
         return $this->cache->get('mixed.data.list', function(CacheItemInterface $cacheItem) use ($url) {
-            $cacheItem->expiresAfter(20);
+            $cacheItem->expiresAfter($this->isDebug ? 5 : 60);
             $response = $this->client->request('GET', $url);
             return $response->toArray();
         });

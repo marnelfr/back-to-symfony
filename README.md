@@ -37,7 +37,7 @@ a PHP class from ``symfony/http-client``.
 However, making request may slow down our application.
 To fix this, we can use the cache: ``CacheInterface`` 
 from ``Symfony/Contracts``.
-````injectablephp
+````php
 $mixes = $cache->get('mixed.data.list', function(CacheItemInterface $cacheItem) use ($client) {
     $cacheItem->expiresAfter(5);
     $response = $client->request('GET', $url);
@@ -85,7 +85,10 @@ We can have 3 types of config for each environment.
 The default config is loaded and then overwrite by the configuration 
 of our environment.
 
-
+## Dependency injection
+````php
+public function __construct(private HttpClientInterface $client, private CacheInterface $cache) {}
+````
 
 
 

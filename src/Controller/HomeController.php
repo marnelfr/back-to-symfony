@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\MixRepository;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,13 +33,8 @@ class HomeController extends AbstractController
     }
 
     #[Route('browse/{slug?}', name: 'browse')]
-    public function browse(HttpClientInterface $client, CacheInterface $cache, string $slug = null) {
-        $url = 'https://raw.githubusercontent.com/SymfonyCasts/vinyl-mixes/main/mixes.json';
-        $mixes = $cache->get('mixed.data.list', function(CacheItemInterface $cacheItem) use ($client, $url) {
-            $cacheItem->expiresAfter(20);
-            $response = $client->request('GET', $url);
-            return $response->toArray();
-        });
+    public function browse(MixRepository $repository, string $slug = null) {
+        $mixes = $repository->findAll();
         $genre = u($slug)->replace('-', ' ')->title(true) ?: null;
 
         return $this->render('home/browse.html.twig', [

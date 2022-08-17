@@ -64,3 +64,25 @@ of the bundle including defaults one.
 - ``config:dump twig`` shows us a giant tree of example configuration
 which includes everything that's possible. 
 
+## Service container
+Contains the list of services in our app (or in the container).
+It's basically a giant **array** where each service has a 
+unique name that points to its service object. 
+- ``debug:container`` shows us the full list of services in our app.
+
+The container only instantiate a given service once during a request. 
+The service maybe asked several time, it'll be instantiated once and 
+the container will return the same one instance.\
+However, every service in the container is not autowireable. Those
+who actually are can be display by the command ``debug:autowiring``.
+
+
+
+
+
+
+
+
+
+
+

@@ -108,7 +108,25 @@ services:
             $isDebug: '%kernel.debug%'
 ````
 
+## Services.yaml
+Thanks to configuration under the key ``services``, our classes
+in ``src/`` are available to be used as services. They are then 
+**Service classes**. Those created services' id is the 
+fully-qualified class name, they are then **autowireable**.\
+However, this except **Modal classes** or **DTOs** whose job is
+mostly to hold data.
 
+Thanks to the ``_defaults`` section, any of our custom services will
+automatically have ``autowire: true`` and ``autoconfigure: true``.
+So the container will automatically inject their dependencies and
+configure them as commands, event subscribers, etc.
+
+While it's possible to add our ``parameters`` in any files, we 
+better let them in the ``services.yaml`` file.
+
+**Autowiring, service auto-registration and other related 
+features have zero performance effect when our app 
+run in the prod env**
 
 
 

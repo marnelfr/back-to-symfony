@@ -87,8 +87,21 @@ of our environment.
 
 ## Dependency injection
 ````php
-public function __construct(private HttpClientInterface $client, private CacheInterface $cache) {}
+public function __construct(
+    private HttpClientInterface $client, 
+    private CacheInterface $cache
+) {}
 ````
+Start with Symfony 6.1, we can set non-autowireable argument this way:
+````php
+public function __construct(
+    private HttpClientInterface $client, 
+    private CacheInterface $cache,
+    #[\Symfony\Component\DependencyInjection\Attribute\Autowire('%kernel.debug%')]
+    private bool $isDebug
+) {}
+````
+
 
 ## Parameters
 The container doesn't only contain services. It also contains 
@@ -106,7 +119,11 @@ services:
     App\Service\MixRepository:
         bind:
             $isDebug: '%kernel.debug%'
+            'bool $isDebug': '%kernel.debug%'
 ````
+However, instead of completely overwriting the MixRepository
+service, we could ``bind`` the ``$isDebug`` variable to every 
+service in the ``_default`` section.
 
 ## Services.yaml
 Thanks to configuration under the key ``services``, our classes

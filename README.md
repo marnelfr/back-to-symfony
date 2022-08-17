@@ -92,7 +92,8 @@ public function __construct(
     private CacheInterface $cache
 ) {}
 ````
-Start with Symfony 6.1, we can set non-autowireable argument this way:
+Starting with Symfony 6.1, we can set our non-autowireable 
+arguments this way:
 ````php
 public function __construct(
     private HttpClientInterface $client, 
@@ -112,7 +113,7 @@ inside the ``services.yaml`` config file. Parameters (``kernel.project_dir`` in 
 can be used in our config file with the syntax 
 ``'%kernel.project_dir%'``.
 
-The ``services.yaml`` config file can also be used set custom
+The ``services.yaml`` config file can also be used to set custom
 services definitions when explicit configuration is needed:
 ````yaml
 services:
@@ -126,7 +127,7 @@ service, we could ``bind`` the ``$isDebug`` variable to every
 service in the ``_default`` section.
 
 ## Services.yaml
-Thanks to configuration under the key ``services``, our classes
+Thanks to configurations under the key ``services``, our classes
 in ``src/`` are available to be used as services. They are then 
 **Service classes**. Those created services' id is the 
 fully-qualified class name, they are then **autowireable**.\
@@ -144,6 +145,22 @@ better let them in the ``services.yaml`` file.
 **Autowiring, service auto-registration and other related 
 features have zero performance effect when our app 
 run in the prod env**
+
+## Named autowiring
+We can pre-configure some of our services. This doesn't overwrite 
+them but add a named autowireable service.\
+This is actually possible with the ``HttpClient`` service where we
+can create a [scoping client](https://symfony.com/doc/current/http_client.html#scoping-client)
+having a particular behavior like using a ``base-uri`` for example.
+
+**Named autowireable** services have a particular name in the 
+``debug:autowiring`` list. To use them and benefit everything 
+their bring, they must be injected with their name. 
+
+
+
+
+
 
 
 

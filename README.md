@@ -76,7 +76,14 @@ the container will return the same one instance.\
 However, every service in the container is not autowireable. Those
 who actually are can be display by the command ``debug:autowiring``.
 
-
+## Environments
+We have three environments in symfony: prod, dev, and test.
+At the entry point of our app, the Kernel is instantiated with our
+environment and the debug mode.\
+Base on that, our config files are loaded.
+We can have 3 types of config for each environment.
+The default config is loaded and then overwrite by the configuration 
+of our environment.
 
 
 

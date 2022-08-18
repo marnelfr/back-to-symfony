@@ -228,7 +228,7 @@ using ``secrets:set VAR_NAME --local``
 
 ## Maker bundle
 Installation: ``composer req maker --dev``
-Thanks to it, we can created a command using 
+Thanks to it, we can create a command using 
 ``make:command app:talk-to-me`` for example where **app:talk-to-me**
 is the name of our command.
 

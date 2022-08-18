@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\MixRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,6 +18,12 @@ use function Symfony\Component\String\u;
 )]
 class TalkToMeCommand extends Command
 {
+
+    public function __construct(private MixRepository $repository, string $name = null)
+    {
+        parent::__construct($name);
+    }
+
     protected function configure(): void
     {
         $this
@@ -39,6 +46,12 @@ class TalkToMeCommand extends Command
         }
 
         $io->success($message);
+
+        if($io->confirm('Do you want a recommendation ?')) {
+            $mixes = $this->repository->findAll();
+            $mix = $mixes[array_rand($mixes)];
+            $io->note('I recommend ' . $mix['title']);
+        }
 
         return Command::SUCCESS;
     }

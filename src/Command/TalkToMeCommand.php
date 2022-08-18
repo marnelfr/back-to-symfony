@@ -51,6 +51,7 @@ class TalkToMeCommand extends Command
             $mixes = $this->repository->findAll();
             $mix = $mixes[array_rand($mixes)];
             $io->note('I recommend ' . $mix['title']);
+            $io->note('Bye Symfony 6 !!');
         }
 
         return Command::SUCCESS;

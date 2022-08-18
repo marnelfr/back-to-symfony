@@ -153,11 +153,77 @@ This is actually possible with the ``HttpClient`` service where we
 can create a [scoping client](https://symfony.com/doc/current/http_client.html#scoping-client)
 having a particular behavior like using a ``base-uri`` for example.
 
-**Named autowireable** services have a particular name in the 
+**Named autowireable** services have a specific name in the 
 ``debug:autowiring`` list. To use them and benefit everything 
 their bring, they must be injected with their name. 
 
 
+## Non-autowireable services
+Those services can't be injected since they are not autowireable.
+However, if we do really need them, we can ``bind`` them to our service
+````yaml
+services:
+    App\Service\MixRepository:
+        bind:
+            $twigDebugCommand: '@twig.command.debug'
+````
+Or we can use the ``Autowrie`` attribute setting the named argument
+``service``
+````php
+public function __construct(
+    private CacheInterface $cache,
+    #[Autowire(service: 'twig.command.debug')]
+    private DebugCommand $twigDebugCommand
+) {}
+````
+Let's execute a command manually in our PHP code:
+````php
+$output = new BufferedOutput();
+$this->debugCommand->run(new ArrayInput([]), $output);
+dd($output);
+````
+
+## Environment variables
+They can be used to keep secret our token and other config 
+variables. They are set in the ``.env`` file that Symfony reads
+when it boots up to turn all of them into environment variables.\
+[Been trying this and it doesn't work ->] However, if we've got a real env variable in our system with the
+same name, that real env variable would win over the one in the 
+``.env`` file.
+
+They can be accessed from config files using: ``'%env(VAR_NAME)%'``\
+Thanks to **processor system**, we can use ``'%env(trim:VAR_NAME)%'``
+to trim white space on our env variables or ``'%env(file:VAR_FILE_PATH)%'``
+when providing the path to a file that hold our env variable value.
+
+``debug:dotenv`` command can be used to show our env variables 
+and their values.
+
+
+## Symfony's secrets vault
+It's a set of files that contain environment variables in an 
+encrypted form. They are then safe to be committed compared to 
+our ``.env.local`` file.\
+Commands:
+- ``secrets:set VAR_NAME [--env=prod] [--local]``: to add a secret
+- ``secrets:remove VAR_NAME``
+- ``secrets:list [--reveal]``
+- ...
+
+When using secrets vault, we'll need two of them: one for the **dev**
+and another for the **prod** environment.\
+The secrets vault has for each environment, 
+- a ``list.php`` file that stores a list of which 
+values live inside the vault, 
+- a ``encrypt.public.php`` file containing a cryptographic key that's
+is used to add more secrets,
+- a set of files that contains our secrets' encrypted values,
+- a ``decrypt.private.php`` file containing the secret key to decrypt 
+  and read the values in the vault. **This last file of the prod vault shouldn't be committed.** 
+
+**Secrets** act like our env vars but if set, env vars values win.\
+So dev secrets should contain our real key that should be set locally
+using ``secrets:set VAR_NAME --local``
 
 
 

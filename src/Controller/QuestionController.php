@@ -17,8 +17,10 @@ class QuestionController extends AbstractController
     private $logger;
     private $isDebug;
 
-    public function __construct(LoggerInterface $logger, bool $isDebug)
-    {
+    public function __construct(
+        LoggerInterface $logger, bool $isDebug,
+        private readonly QuestionRepository $repository
+    ){
         $this->logger = $logger;
         $this->isDebug = $isDebug;
     }
@@ -27,11 +29,15 @@ class QuestionController extends AbstractController
     #[Route('/', name: 'app_homepage')]
     public function homepage()
     {
-        return $this->render('question/homepage.html.twig');
+        $questions = $this->repository->findAskedOrderedByAskedAt();
+
+        return $this->render('question/homepage.html.twig', [
+            'questions' => $questions
+        ]);
     }
 
     #[Route('/questions/new')]
-    public function create(SluggerInterface $slugger, EntityManagerInterface $em) {
+    public function create(SluggerInterface $slugger) {
         $question = new Question();
         $question->setName('Missing name')
             ->setSlug($slugger->slug('missing name ' . rand(1, 1000)))
@@ -43,21 +49,21 @@ Mv stands for move. mv is used to move one or more files or directories from one
 No additional space is consumed on a disk during renaming. This command normally works silently means no prompt for confirmation.
 EOF
             )->setAskedAt(new \DateTimeImmutable(sprintf('-%d days', rand(1, 100))));
-        $em->persist($question);
-        $em->flush();
+
+        $this->repository->add($question, true);
 
         return new Response(sprintf('Question #%d added with the slug %s', $question->getId(), $question->getSlug()));
     }
 
     #[Route('/questions/{slug}', name: 'app_question_show')]
-    public function show($slug, MarkdownHelper $markdownHelper, QuestionRepository $repository)
+    public function show($slug, MarkdownHelper $markdownHelper)
     {
         if ($this->isDebug) {
             $this->logger->info('We are in debug mode!');
         }
 
         /** @var Question|null $question */
-        $question = $repository->findOneBy(['slug' => $slug]);
+        $question = $this->repository->findOneBy(['slug' => $slug]);
         if(!$question) {
             throw $this->createNotFoundException(sprintf('Question of slug %s not found', $slug));
         }

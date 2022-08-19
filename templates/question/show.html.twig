@@ -17,7 +17,7 @@
                                     Asked <br>
                                     {% if question.askedAt %}
                                         {{ question.askedAt|ago }}
-                                    {% ekse %}
+                                    {% else %}
                                         (unpublished)
                                     {% endif %}
                                 </small>

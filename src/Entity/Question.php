@@ -23,6 +23,9 @@ class Question
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $question = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $askedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Question
     public function setQuestion(?string $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    public function getAskedAt(): ?\DateTimeImmutable
+    {
+        return $this->askedAt;
+    }
+
+    public function setAskedAt(?\DateTimeImmutable $askedAt): self
+    {
+        $this->askedAt = $askedAt;
 
         return $this;
     }

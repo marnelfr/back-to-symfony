@@ -233,8 +233,15 @@ Thanks to it, we can create a command using
 is the name of our command.
 
 
-
-
+## Doctrine
+- ``doctrine:query:sql "select * from questions"`` used to 
+make request to the database base.
+- ``doctrine:migration:list`` displays the list of migrations 
+and their status
+- ``throw $this->createNotFoundException($message)`` can be 
+used to trigger a 404 page. The ``$message`` it receive it's
+only seen by developer.
+- 
 
 
 

@@ -27,7 +27,7 @@ class QuestionController extends AbstractController
 
 
     #[Route('/', name: 'app_homepage')]
-    public function homepage()
+    public function homepage(): Response
     {
         $questions = $this->repository->findAskedOrderedByAskedAt();
 
@@ -37,7 +37,7 @@ class QuestionController extends AbstractController
     }
 
     #[Route('/questions/new')]
-    public function create(SluggerInterface $slugger) {
+    public function create(SluggerInterface $slugger): Response {
         $question = new Question();
         $question->setName('Missing name')
             ->setSlug($slugger->slug('missing name ' . rand(1, 1000)))
@@ -56,7 +56,7 @@ EOF
     }
 
     #[Route('/questions/{slug}', name: 'app_question_show')]
-    public function show($slug, MarkdownHelper $markdownHelper)
+    public function show($slug, MarkdownHelper $markdownHelper): Response
     {
         if ($this->isDebug) {
             $this->logger->info('We are in debug mode!');

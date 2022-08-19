@@ -254,6 +254,13 @@ public function show(Question $question): Response
 //find one Question where the slug and id match.
 ````
 
+## Controller arguments
+- An argument those name matches a route wildcard
+- Autowire a service via its type-hint
+- Type-hint an entity class to automatically query about it
+- Type-hint the Request class to automatically get the 
+Request object.
+
 
 
 

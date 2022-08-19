@@ -6,6 +6,7 @@ use App\Entity\Question;
 use App\Repository\QuestionRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -76,5 +77,16 @@ EOF
             'question' => $question,
             'answers' => $answers,
         ]);
+    }
+
+    #[Route('/questions/{slug}/vote', name: 'app_question_vote')]
+    public function updateVote(Question $question, Request $request) {
+        $direction = $request->request->get('direction');
+
+        if($direction === 'up') {
+            $question->setVotes($question->getVotes() + 1);
+        } else {
+            $question->setVotes($question->getVotes() - 1);
+        }
     }
 }

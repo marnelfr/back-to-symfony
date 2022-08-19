@@ -241,7 +241,19 @@ and their status
 - ``throw $this->createNotFoundException($message)`` can be 
 used to trigger a 404 page. The ``$message`` it receive it's
 only seen by developer.
-- 
+
+
+
+## Param converter
+Using the **sensio/framework-extra-bundle**, we can make queries directly based on our 
+path wildcards.\
+Installation: ``composer require sensio/framework-extra-bundle``\
+````php
+#[Route('/questions/{slug}/{id}')]
+public function show(Question $question): Response
+//find one Question where the slug and id match.
+````
+
 
 
 

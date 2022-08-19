@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Question;
 use App\Repository\QuestionRepository;
-use App\Service\MarkdownHelper;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +34,7 @@ class QuestionController extends AbstractController
         ]);
     }
 
+
     #[Route('/questions/new')]
     public function create(SluggerInterface $slugger): Response {
         $question = new Question();
@@ -48,24 +47,23 @@ Mv stands for move. mv is used to move one or more files or directories from one
 (ii) It moves a group of files to a different directory. 
 No additional space is consumed on a disk during renaming. This command normally works silently means no prompt for confirmation.
 EOF
-            )->setAskedAt(new \DateTimeImmutable(sprintf('-%d days', rand(1, 100))));
+            )
+            ->setAskedAt(new \DateTimeImmutable(sprintf('-%d days', rand(1, 100))))
+            ->setVotes(rand(-20, 30))
+        ;
 
         $this->repository->add($question, true);
 
         return new Response(sprintf('Question #%d added with the slug %s', $question->getId(), $question->getSlug()));
     }
 
+
+
     #[Route('/questions/{slug}', name: 'app_question_show')]
-    public function show($slug, MarkdownHelper $markdownHelper): Response
+    public function show(Question $question): Response
     {
         if ($this->isDebug) {
             $this->logger->info('We are in debug mode!');
-        }
-
-        /** @var Question|null $question */
-        $question = $this->repository->findOneBy(['slug' => $slug]);
-        if(!$question) {
-            throw $this->createNotFoundException(sprintf('Question of slug %s not found', $slug));
         }
 
         $answers = [

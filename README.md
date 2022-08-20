@@ -272,7 +272,10 @@ Using ``doctrine:fixtures:load``, we can load our fixtures.
 Installation: ``composer req zenstruck/foundry --dev``\
 It brings us the ``make:factory`` command. We can then create
 our factory using [FakerPHP](https://github.com/FakerPHP/Faker)
-and use them in our **DataFixtures**.
+and use them in our **DataFixtures**.\
+While using **fondry** to define our relationship, always associate 
+factory as relational entity. This avoid useless data insertion 
+when we overwrite the associated factory value.
 
 ## [Doctrine extension](https://github.com/doctrine-extensions/DoctrineExtensions)
 We've got some extension for doctrine allowing to perform easily some

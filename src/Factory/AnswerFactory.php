@@ -42,8 +42,8 @@ final class AnswerFactory extends ModelFactory
             'content' => self::faker()->text(),
             'username' => self::faker()->userName(),
             'votes' => self::faker()->numberBetween(-20, 50),
-            'createdAt' => self::faker()->dateTimeBetween('-1 year', '-1 minute'), //new \DateTimeImmutable(->format('Y-m-d')),
-            'question' => QuestionFactory::random()
+            'createdAt' => self::faker()->dateTimeBetween('-1 year', '-1 minute'),
+            'question' => QuestionFactory::new()->unpublished()
         ];
     }
 

@@ -54,10 +54,7 @@ final class QuestionFactory extends ModelFactory
     {
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
-             ->afterInstantiate(function(Question $question): void {
-                 $slugger = new AsciiSlugger();
-                 $question->setSlug($slugger->slug($question->getName()));
-             })
+             ->afterInstantiate(function(Question $question): void {})
         ;
     }
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Question;
 use App\Repository\QuestionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ class QuestionController extends AbstractController
 
     public function __construct(
         LoggerInterface $logger, bool $isDebug,
-        private readonly QuestionRepository $repository
+        private readonly QuestionRepository $repository,
     ){
         $this->logger = $logger;
         $this->isDebug = $isDebug;
@@ -80,13 +81,17 @@ EOF
     }
 
     #[Route('/questions/{slug}/vote', name: 'app_question_vote')]
-    public function updateVote(Question $question, Request $request) {
+    public function updateVote(Question $question, Request $request, EntityManagerInterface $em) {
         $direction = $request->request->get('direction');
-
         if($direction === 'up') {
-            $question->setVotes($question->getVotes() + 1);
+            $question->upVote();
         } else {
-            $question->setVotes($question->getVotes() - 1);
+            $question->downVote();
         }
+        $em->flush();
+
+        return $this->redirectToRoute('app_question_show', [
+            'slug' => $question->getSlug()
+        ]);
     }
 }

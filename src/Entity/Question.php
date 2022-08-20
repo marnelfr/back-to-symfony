@@ -110,6 +110,6 @@ class Question
 
     public function getVotesString(): string {
         $prefix = $this->votes > 0 ? '+' : '-';
-        return "{$prefix} {$this->votes}";
+        return sprintf("%s %d", $prefix, abs($this->votes));
     }
 }

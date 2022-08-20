@@ -39,24 +39,9 @@ class QuestionController extends AbstractController
 
     #[Route('/questions/new')]
     public function create(SluggerInterface $slugger): Response {
-        $question = new Question();
-        $question->setName('Missing name')
-            ->setSlug($slugger->slug('missing name ' . rand(1, 1000)))
-            ->setQuestion(
-<<<EOF
-Mv stands for move. mv is used to move one or more files or directories from one place to another in a file system like UNIX. It has two distinct functions: 
-(i) It renames a file or folder. 
-(ii) It moves a group of files to a different directory. 
-No additional space is consumed on a disk during renaming. This command normally works silently means no prompt for confirmation.
-EOF
-            )
-            ->setAskedAt(new \DateTimeImmutable(sprintf('-%d days', rand(1, 100))))
-            ->setVotes(rand(-20, 30))
-        ;
+        dd('0k');
 
-        $this->repository->add($question, true);
-
-        return new Response(sprintf('Question #%d added with the slug %s', $question->getId(), $question->getSlug()));
+//        return new Response(sprintf('Question #%d added with the slug %s', $question->getId(), $question->getSlug()));
     }
 
 

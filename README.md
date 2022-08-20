@@ -260,10 +260,26 @@ public function show(Question $question): Response
 - Type-hint an entity class to automatically query about it
 - Type-hint the Request class to automatically get the 
 Request object.
+-
 
 
+## Data Fixtures
+Installation: ``composer req orm-fixtures --dev``\
+Can be used to populate our database in order to test our code.
+Using ``doctrine:fixtures:load``, we can load our fixtures.
 
+### Using Factory
+Installation: ``composer req zenstruck/foundry --dev``\
+It brings us the ``make:factory`` command. We can then create
+our factory using [FakerPHP](https://github.com/FakerPHP/Faker)
+and use them in our **DataFixtures**.
 
+## [Doctrine extension](https://github.com/doctrine-extensions/DoctrineExtensions)
+We've got some extension for doctrine allowing to perform easily some
+actions such as 
+- updates date fields on create, update and even property change.
+- urlizes specified fields into single unique slug
+- very handy solution for translating records into different languages
+- 
 
-
-
+Let's use a tiny layer of this bundle called [StofDoctrineExtensionsBundle](https://symfony.com/bundles/StofDoctrineExtensionsBundle/current/index.html)

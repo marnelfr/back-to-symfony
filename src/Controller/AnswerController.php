@@ -13,7 +13,6 @@ class AnswerController extends AbstractController
 
     #[Route('/answers/{id}/vote', name: 'app_answer_vote')]
     public function vote(Answer $answer, Request $request) {
-
     }
 
 }

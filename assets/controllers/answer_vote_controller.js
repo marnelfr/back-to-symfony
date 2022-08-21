@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import axios from "axios";
 
 /*
 * The following line makes this controller "lazy": it won't be downloaded until needed
@@ -12,7 +13,7 @@ export default class extends Controller {
 
     vote(e) {
         e.preventDefault()
-        console.log('oko')
+        axios.post(this.infoApiUrl)
     }
 
 }

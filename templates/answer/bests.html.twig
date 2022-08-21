@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ul>
+<div class="container">
+    <h1>Most popular answers</h1>
+    <ul class="list-unstyled">
         {% for answer in answers %}
-            {% include 'answer/_answer.html.twig' with {
+            {{ include('answer/_answer.html.twig', {
                 showQuestion: true
-            } %}
+            }) }}
         {% endfor %}
     </ul>
+</div>
 {% endblock %}

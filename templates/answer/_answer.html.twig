@@ -1,6 +1,10 @@
 <li class="mb-4">
     {% if showQuestion|default(false) %}
-        <a href="{{ path('app_question_show', {slug: answer.question.slug}) }}">{{ answer.question }}</a>
+        <a class="mt-1"
+                href="{{ path('app_question_show', {slug: answer.question.slug}) }}">
+            <strong>Question: </strong>
+            {{ answer.question|u.truncate(80, '...') }}
+        </a>
     {% endif %}
     <div class="d-flex justify-content-center">
         <div class="mr-2 pt-2">

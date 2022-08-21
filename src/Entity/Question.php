@@ -168,6 +168,6 @@ class Question
     }
 
     public function __toString() {
-        return $this->getQuestion();
+        return (string)$this->getQuestion();
     }
 }

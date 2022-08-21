@@ -49,7 +49,7 @@ class AnswerRepository extends ServiceEntityRepository
     /**
      * @return Answer[]
      */
-    public function getMaxVotedAnswers(int $max = 10): array
+    public function findBestAnswers(int $max = 10): array
     {
         return $this->createQueryBuilder('a')
             ->addCriteria(self::createApprovedCriteria())

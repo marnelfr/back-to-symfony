@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,10 +31,13 @@ class QuestionController extends AbstractController
     #[Route('/', name: 'app_homepage')]
     public function homepage(): Response
     {
-        $questions = $this->repository->findAskedOrderedByAskedAt();
+        $queryBuilder = $this->repository->creatQBForQuestionsOrderedByAskedAt();
+
+        $pager = new Pagerfanta(new QueryAdapter($queryBuilder));
+        $pager->setMaxPerPage(5);
 
         return $this->render('question/homepage.html.twig', [
-            'questions' => $questions
+            'questions' => $pager
         ]);
     }
 

@@ -43,15 +43,14 @@ class QuestionRepository extends ServiceEntityRepository
     /**
      * @return Question[] Returns an array of Question objects
      */
-    public function findAskedOrderedByAskedAt(): array
+    public function creatQBForQuestionsOrderedByAskedAt(): QueryBuilder
     {
         return $this->addIsAskedQueryBuilder()
             ->orderBy('q.askedAt', 'DESC')
             ->leftJoin('q.questionTags', 'qt')
             ->innerJoin('qt.tag', 't')
             ->addSelect(['qt', 't'])
-            ->getQuery()
-            ->getResult()
+
         ;
     }
 

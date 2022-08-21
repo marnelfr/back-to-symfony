@@ -329,6 +329,23 @@ Criteria can be used with the ``queryBuilder`` thanks to the
 One way you can fix the **N+1 problem** is using **innerJoin** while 
 querying.
 
+## [PagerFantaBundle](https://www.babdev.com/open-source/packages/pagerfantabundle/docs)
+Instead of using the [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle),
+this is also a great bundle to use for pagination.\
+To use it, we need to install the bundle: ``composer require babdev/pagerfanta-bundle``\
+Now, we have to install the QueryAdapter corresponding to our ORM
+``composer req pagerfanta/doctrine-orm-adapter`` then we can create 
+our pager this way:
+````php 
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
+
+$queryBuilder = $this->repository->creatQueryBuilderForQuestions();
+$pager = new Pagerfanta(new QueryAdapter($queryBuilder));
+$pager->setMaxPerPage(5);
+````
+
+
 
 
 

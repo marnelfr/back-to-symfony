@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <ul>
+        {% for answer in answers %}
+            {% include 'answer/_answer.html.twig' with {
+                showQuestion: true
+            } %}
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -287,6 +287,35 @@ actions such as
 
 Let's use a tiny layer of this bundle called [StofDoctrineExtensionsBundle](https://symfony.com/bundles/StofDoctrineExtensionsBundle/current/index.html)
 
+## Entity getter usage
+Don't hesitate to use and entity getter to simplify codes. 
+Methods like ``$answer->isApproved()``, 
+``$questions->getApprovedAnswers()`` should be added and used 
+instead of only using the provided ``$questions->getAnswers()``.
+
+## Criteria
+Can be used to add ``where`` statements to our queries while using 
+the ``matching()`` method on a collection. It's better than just
+using the ``filter()`` method.
+````php 
+/src/Repository/AnswerRepository
+public static function createApprovedCriteria(): Criteria
+{
+    return Criteria::create()
+        ->andWhere(Criteria::expr()->eq('status', Answer::STATUS_APPROVED));
+}
+
+/src/Entity/Question
+public function getApprovedAnswers(): Collection
+{
+    return $this->answers->matching(AnswerRepository::createApprovedCriteria());
+}
+````
+
+Criteria can be used with the ``queryBuilder`` thanks to the 
+``addCriteria()`` method.
+
+
 
 
 

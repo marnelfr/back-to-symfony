@@ -35,6 +35,10 @@ final class AnswerFactory extends ModelFactory
         // TODO inject services if required (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services)
     }
 
+    public function unapproved() {
+        return $this->addState(['status' => Answer::STATUS_NEED_APPROVAL]);
+    }
+
     protected function getDefaults(): array
     {
         return [

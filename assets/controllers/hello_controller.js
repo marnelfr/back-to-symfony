@@ -6,9 +6,8 @@ import { Controller } from '@hotwired/stimulus';
  * Any element with a data-controller="hello" attribute will cause
  * this controller to be executed. The name "hello" comes from the filename:
  * hello_controller.js -> "hello"
- * / stimulusFetch: 'lazy' /
-
-* Delete this file or adapt it for your use!
+ *
+ * Delete this file or adapt it for your use!
  */
 export default class extends Controller {
     connect() {

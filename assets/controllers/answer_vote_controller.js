@@ -12,7 +12,8 @@ export default class extends Controller {
 
     vote(e) {
         e.preventDefault()
-        axios.post(this.infoApiUrl)
+        console.log('okoko')
+        // axios.post(this.infoApiUrl)
     }
 
 }

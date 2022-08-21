@@ -49,13 +49,20 @@ class AnswerRepository extends ServiceEntityRepository
     /**
      * @return Answer[]
      */
-    public function findBestAnswers(int $max = 10): array
+    public function findBestAnswers(string $filter = null, int $max = 10): array
     {
-        return $this->createQueryBuilder('a')
+        $query = $this->createQueryBuilder('a')
             ->addCriteria(self::createApprovedCriteria())
             ->orderBy('a.votes', 'DESC')
             ->innerJoin('a.question', 'q')
-            ->addSelect('q')
+            ->addSelect('q');
+
+        if($filter) {
+            $query->andWhere('a.content LIKE :searchTerm OR q.question LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $filter . '%');
+        }
+
+        return $query
             ->setMaxResults($max)
             ->getQuery()
             ->getResult();

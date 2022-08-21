@@ -325,6 +325,9 @@ public function getApprovedAnswers(): Collection
 Criteria can be used with the ``queryBuilder`` thanks to the 
 ``addCriteria()`` method.
 
+## N+1 problem
+One way you can fix the **N+1 problem** is using **innerJoin** while 
+querying.
 
 
 

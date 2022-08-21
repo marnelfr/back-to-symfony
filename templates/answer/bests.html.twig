@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container">
-    <h1>Most popular answers</h1>
+<div class="container mt-4 mb-4">
+    <dov class="d-flex justify-content-between">
+        <h1>Most popular answers</h1>
+        <form action="{{ path('app_answer_bests') }}">
+            <input type="text" placeholder="Search..." value="{{ app.request.query.get('filter') }}" name="filter" class="form-control">
+        </form>
+    </dov>
     <ul class="list-unstyled">
         {% for answer in answers %}
             {{ include('answer/_answer.html.twig', {

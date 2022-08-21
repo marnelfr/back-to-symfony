@@ -17,8 +17,10 @@ class AnswerController extends AbstractController
     }
 
     #[Route('/answers/bests', name: 'app_answer_bests')]
-    public function bests(AnswerRepository $repository): Response {
-        $answers = $repository->findBestAnswers();
+    public function bests(AnswerRepository $repository, Request $request): Response {
+        $answers = $repository->findBestAnswers(
+            $request->query->get('filter')
+        );
         return $this->render('answer/bests.html.twig', [
             'answers' => $answers
         ]);

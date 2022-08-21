@@ -343,8 +343,10 @@ use Pagerfanta\Pagerfanta;
 $queryBuilder = $this->repository->creatQueryBuilderForQuestions();
 $pager = new Pagerfanta(new QueryAdapter($queryBuilder));
 $pager->setMaxPerPage(5);
+$pager->setCurrentPage($request->query->get('page', 1));
 ````
-
+We can use the twitter_bootstrap5 view if we install the twig function
+using ``composer req pagerfanta/twig``
 
 
 

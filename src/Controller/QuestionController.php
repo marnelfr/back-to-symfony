@@ -29,12 +29,13 @@ class QuestionController extends AbstractController
 
 
     #[Route('/', name: 'app_homepage')]
-    public function homepage(): Response
+    public function homepage(Request $request): Response
     {
         $queryBuilder = $this->repository->creatQBForQuestionsOrderedByAskedAt();
 
         $pager = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pager->setMaxPerPage(5);
+        $pager->setCurrentPage($request->query->get('page', 1));
 
         return $this->render('question/homepage.html.twig', [
             'questions' => $pager

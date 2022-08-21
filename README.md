@@ -287,7 +287,17 @@ actions such as
 
 Let's use a tiny layer of this bundle called [StofDoctrineExtensionsBundle](https://symfony.com/bundles/StofDoctrineExtensionsBundle/current/index.html)
 
-## Entity getter usage
+
+## Entity 
+``EXTRA_LAZY`` fetch make doctrine only query a ``count(*)`` when
+we only access the ``length`` of a collection from an entity.
+However, this may cause more queries from Doctrine in case we access
+the length of the collection before using its properties.
+
+``#[ORM\OrderBy(['createdAt' => 'DESC'])]`` can be used to ordered
+a collection get from a doctrine relation.
+
+### Getter usage
 Don't hesitate to use and entity getter to simplify codes. 
 Methods like ``$answer->isApproved()``, 
 ``$questions->getApprovedAnswers()`` should be added and used 

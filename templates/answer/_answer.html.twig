@@ -10,6 +10,7 @@
             {{ answer.content|parse_markdown }}
             <p>-- {{ answer.username }}</p>
         </div>
+        <small>{{ answer.createdAt|ago }}</small>
         <div
                 {{ stimulus_controller('answer-vote', {apiUrl: path('app_answer_vote', {id: answer.id})})}}
                 class="vote-arrows flex-fill pt-2 js-vote-arrows" style="min-width: 90px;"

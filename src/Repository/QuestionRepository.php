@@ -47,6 +47,8 @@ class QuestionRepository extends ServiceEntityRepository
     {
         return $this->addIsAskedQueryBuilder()
             ->orderBy('q.askedAt', 'DESC')
+            ->leftJoin('q.tags', 't')
+            ->addSelect('t')
             ->getQuery()
             ->getResult()
         ;

@@ -19,6 +19,11 @@ class CheeseListing
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    /**
+     * The price of our lovely cheese
+     *
+     * @var string|null
+     */
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 

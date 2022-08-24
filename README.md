@@ -74,6 +74,19 @@ And each of them, we can be customized if transformed into a key
 with its config as value:\
 ``'GET' => ['path' => '/lov/de/{id}']``
 
+## Serializer
+It used to convert our resource from object to json before sending
+and from json to object before using them in our app.
+To do that, it uses the getter and the setter of our entity.
+This mean we can 
+- change/delete our resources' json properties by modifying
+our getters 
+- and change/delete the json properties our api will receive by modifying
+our setters. 
+ 
+
+
+
 ## ApiResource's properties
 - shortName: 'Cheese': to rename our resource
 

@@ -40,10 +40,43 @@ Here, every think is listed to help machine understanding really
 what our resource actually represent. We can even make it more
 informational by providing description for our entities properties.
 
-
 ### @type
 A resume from information provided by @context that let machine 
 know about our resource's type.
+
+
+## Profiler
+Installation: ``composer req profiler --dev``\
+While we can install the debugger ``req debug`` to get an extra 
+debug tools in addition to the profiler, it can be installed alone.
+
+### Operations
+We've got 2 type of operations:
+- **collectionOperation**: doesn't require a resource's Id. It has
+  - a GET method: to retrieve a collection of resource
+  - a POST method: to create a collection of resource
+- **itemOperation**: require a resource Id and has
+  - a GET method
+  - a PUT method: to edit the whole resource
+  - a PATCH method: to only edit some fields of our resource.
+  - a DELETE method: to destroy a resource.
+
+So while setting up our resource, we can define which kind or 
+operation we want our API to expose:
+````php 
+#[ApiResource(
+    collectionOperations: ['GET', 'POST'],
+    itemOperations: ['GET', 'PUT', 'PATCH', 'DELETE'],
+)]
+````
+Removing any of these array value will remove the api endpoint.\
+And each of them, we can be customized if transformed into a key
+with its config as value:\
+``'GET' => ['path' => '/lov/de/{id}']``
+
+## ApiResource's properties
+- shortName: 'Cheese': to rename our resource
+
 
 
 

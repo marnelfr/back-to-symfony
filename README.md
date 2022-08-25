@@ -1,7 +1,7 @@
 ## API Platform
 Installation: ``composer req api``
 
-To make an entity, an api resource, just add ``#[ApiResource]`` of
+To make an entity, an api resource, just add ``#[ApiResource]`` on the
 top of the entity.
 
 To display the data send by an api point, add the format as extension
@@ -21,11 +21,11 @@ some tools provided by swagger.
 ## RDF
 Stand for **Resource Description Framework**. It's a set of rules about 
 how we can describe the meaning of data.
-JsonLD add some extra fields to our json in order to help machine 
+The RDF JsonLD add some extra fields to our json in order to help machine 
 understanding our API.
 
 ### @id
-In a Rest API, every URL represent a resource and should have its 
+In a Rest API, every resource is represented by an URL and should have its 
 own identifier. That's why thanks to JsonLD, every resource has 
 the ``@id`` filed representing when concatenate to our API
 domain name, the unique identifier of our resource across the 
@@ -47,19 +47,19 @@ know about our resource's type.
 
 ## Profiler
 Installation: ``composer req profiler --dev``\
-While we can install the debugger ``req debug`` to get an extra 
+While we can install the debugger ``req debug`` to get some extra 
 debug tools in addition to the profiler, it can be installed alone.
 
 ### Operations
 We've got 2 type of operations:
 - **collectionOperation**: doesn't require a resource's Id. It has
   - a GET method: to retrieve a collection of resource
-  - a POST method: to create a collection of resource
-- **itemOperation**: require a resource Id and has
-  - a GET method
+  - a POST method: to create a resource
+- **itemOperation**: require a resource's Id and has
+  - a GET method to get an unique resource based on its id
   - a PUT method: to edit the whole resource
   - a PATCH method: to only edit some fields of our resource.
-  - a DELETE method: to destroy a resource.
+  - a DELETE method: to destroy the resource.
 
 So while setting up our resource, we can define which kind or 
 operation we want our API to expose:
@@ -75,20 +75,27 @@ with its config as value:\
 ``'GET' => ['path' => '/lov/de/{id}']``
 
 ## Serializer
-It used to convert our resource from object to json before sending
+It used to convert our resources from object to json before sending
 and from json to object before using them in our app.
-To do that, it uses the getter and the setter of our entity.
+To do that, it uses the getter and the setter of our entity 
+since it use the ObjectNormalizer that employ the 
+**PropertyAccess component**.
 This mean we can 
 - change/delete our resources' json properties by modifying
 our getters 
-- and change/delete the json properties our api will receive by modifying
-our setters. 
+- and change/delete the json properties our api will receive 
+by modifying our setters. 
  
 
 
 
+
+
+
+
+
 ## ApiResource's properties
-- shortName: 'Cheese': to rename our resource
+- (shortName: 'Cheese'): to rename our resource
 
 
 

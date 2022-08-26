@@ -35,7 +35,7 @@ Resource Identifier).
 ### @context
 Provide a link to machine to really understand our resource. In our
 case, the complete url will be\
-``https://localhost:8000/api/contexts/CheeseListing`` \
+``https://localhost/api/contexts/CheeseListing`` \
 Here, every think is listed to help machine understanding really
 what our resource actually represent. We can even make it more
 informational by providing description for our entities properties.
@@ -144,10 +144,22 @@ it needs from those we make available.
 
 
 
+
 ## ApiResource's properties
 - (shortName: 'Cheese'): to rename our resource
+- (paginationItemsPerPage: 2): to paginate the client request
+result up to 2 items per page. Brings use the ``hydra:view`` property
+that has useful information.
+- (paginationPartial: true): makes lighter the ``hydra:view``
+returned information
+- (formats: ['jsonld', 'html', 'json', 'csv' => ['text/csv']]):
+allow use to add as much format as we want. Always add default
+ones when want to add a new one. Since we added the **CSV** format,
+we can then download our api response we such of link: 
+[http://localhost/api/cheeses.csv?page=1](http://localhost/api/cheeses.csv?page=1)
 
 
+  
 
 
 

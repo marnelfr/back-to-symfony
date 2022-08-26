@@ -23,7 +23,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         'PUT', 'PATCH', 'DELETE'],
     shortName: 'Cheese',
     denormalizationContext: ['groups' => ['write:cheese'], 'swagger_definition_name' => 'Write'],
+    formats: ['jsonld', 'html', 'json', 'csv' => ['text/csv']],
     normalizationContext: ['groups' => ['read:cheese'], 'swagger_definition_name' => 'Read'],
+    paginationItemsPerPage: 2,
+    paginationPartial: true
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'description' => 'partial'])]

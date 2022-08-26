@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Repository\CheeseListingRepository;
 use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: CheeseListingRepository::class)]
 #[ApiResource(
@@ -19,6 +25,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['write:cheese'], 'swagger_definition_name' => 'Write'],
     normalizationContext: ['groups' => ['read:cheese'], 'swagger_definition_name' => 'Read'],
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'description' => 'partial'])]
+#[ApiFilter(RangeFilter::class, properties: ['price'])]
+#[ApiFilter(PropertyFilter::class)]
 class CheeseListing
 {
     #[ORM\Id]
@@ -37,6 +47,8 @@ class CheeseListing
      * @var string|null
      */
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['write:cheese', 'read:cheese'])]
+    #[SerializedName('textDescription')]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -48,7 +60,14 @@ class CheeseListing
 
     #[ORM\Column]
     #[Groups(['read:cheese'])]
-    private ?bool $isPublished = null;
+    private ?bool $isPublished = false;
+
+
+    public function __construct(string $title = null)
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->title = $title;
+    }
 
     public function getId(): ?int
     {
@@ -60,12 +79,12 @@ class CheeseListing
         return $this->title;
     }
 
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
+//    public function setTitle(string $title): self
+//    {
+//        $this->title = $title;
+//
+//        return $this;
+//    }
 
     public function getDescription(): ?string
     {
@@ -84,6 +103,7 @@ class CheeseListing
     /**
      * The description of the text with line break
      */
+    #[SerializedName("description")]
     public function setTextDescription(string $description): self
     {
         $this->description = nl2br($description);

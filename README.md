@@ -86,7 +86,57 @@ our getters
 - and change/delete the json properties our api will receive 
 by modifying our setters. 
  
+### Serialization groups
+The normalization is the process turning our resource into a
+array. Only the array got from that process is then convert
+into JSON and send to the client. So we can pass the **groups** 
+option to our **normalizationContext**. Henceforth, only field 
+in these group will be considered in the serialization process.
+Same thing can be done with the **denormalizationContext**.\
+Even getter and setter can be added to groups.
+````php 
+normalizationContext: [
+  'groups' => ['read:cheese'], 
+  'swagger_definition_name' => 'Write' // make our doc's schemas section more readable
+]
+````
 
+### Serialized name
+We can the name sent or through witch our resource's properties
+will be set:
+```php 
+#[SerializedName('textDescription')]
+private ?string $description = null;
+````
+
+## Constructor args
+Removing the setter of a property and adding it as the constructor
+arg make it **immutable** (can be set only once). We can make it
+in our entity, but we should make sure that the arg has the same 
+name as the concerned property. Also, making it nullable is a good
+way to prevent a 400 error code when it's not sent:
+````php
+public function __construct(string $title = null) {
+    $this->title = $title;
+}
+````
+
+## ApiFilter
+A beautiful way to filter our data. It uses a Filter class
+and generally the concerned properties:
+````php 
+#[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'description' => 'partial'])]
+#[ApiFilter(RangeFilter::class, properties: ['price'])]
+#[ApiFilter(PropertyFilter::class)]
+````
+Most Filter classes are in the ``Doctrine/Orm`` namespace so 
+thanks to PHPStorm, we can even display all of them. Each of 
+them has a quick description of how they can be used.
+
+The **PropertyFilter** however is not in that namespace 
+and allow our api client to get only properties 
+it needs from those we make available.
 
 
 

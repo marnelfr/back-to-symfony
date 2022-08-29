@@ -27,7 +27,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     normalizationContext: [
         'groups' => ['cheese:read'],
         'swagger_definition_name' => 'Read'
-    ]
+    ],
+    paginationItemsPerPage: 2
 )]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'description' => 'partial'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]

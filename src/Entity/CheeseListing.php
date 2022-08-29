@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CheeseListingRepository;
+use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: CheeseListingRepository::class)]
 #[ApiResource(
@@ -35,7 +37,7 @@ class CheeseListing
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['cheese:read', 'cheese:write'])]
+    #[Groups(['cheese:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -43,7 +45,6 @@ class CheeseListing
     private ?int $price = null;
 
     #[ORM\Column]
-    #[Groups(['cheese:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(options: ['default' => false])]
@@ -85,6 +86,15 @@ class CheeseListing
         return $this;
     }
 
+    #[Groups(['cheese:write'])]
+    #[SerializedName('description')]
+    public function setTextDescription(string $description): self
+    {
+        $this->description = nl2br($description);
+
+        return $this;
+    }
+
     public function getPrice(): ?int
     {
         return $this->price;
@@ -100,6 +110,12 @@ class CheeseListing
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    #[Groups(['cheese:read'])]
+    public function getCreatedAtAgo(): ?string
+    {
+        return Carbon::instance($this->createdAt)->diffForHumans();
     }
 
     public function setCreatedAt(\DateTimeImmutable $createdAt): self

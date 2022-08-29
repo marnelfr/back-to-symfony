@@ -95,7 +95,7 @@ Even getter and setter can be added to groups.
 ````php 
 normalizationContext: [
   'groups' => ['read:cheese'], 
-  'swagger_definition_name' => 'Write' // make our doc's schemas section more readable
+  'swagger_definition_name' => 'Read' // make our doc's schemas section more readable
 ]
 ````
 

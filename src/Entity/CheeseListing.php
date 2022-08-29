@@ -13,8 +13,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
     collectionOperations: ['GET', 'POST'],
     itemOperations: ['GET', 'PUT', 'PATCH', 'DELETE'],
     shortName: 'Cheese',
-    denormalizationContext: ['groups' => ['cheese:write']],
-    normalizationContext: ['groups' => ['cheese:read']]
+    denormalizationContext: [
+        'groups' => ['cheese:write'],
+        'swagger_definition_name' => 'Write'
+    ],
+    normalizationContext: [
+        'groups' => ['cheese:read'],
+        'swagger_definition_name' => 'Read'
+    ]
 )]
 class CheeseListing
 {
@@ -37,11 +43,18 @@ class CheeseListing
     private ?int $price = null;
 
     #[ORM\Column]
+    #[Groups(['cheese:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: ['default' => false])]
     #[Groups(['cheese:read'])]
     private ?bool $isPublished = null;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTimeImmutable());
+        $this->setIsPublished(false);
+    }
 
     public function getId(): ?int
     {

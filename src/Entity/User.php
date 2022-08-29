@@ -48,8 +48,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['user:read', 'user:write'])]
     #[NotBlank]
+    #[Groups(['user:read', 'user:write', 'cheese:item:get', 'cheese:write'])]
     #[Length(min: 3, minMessage: 'Your username must have at least 3 characters')]
     private ?string $username = null;
 

@@ -16,11 +16,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[ORM\Entity(repositoryClass: CheeseListingRepository::class)]
 #[ApiResource(
     collectionOperations: ['GET', 'POST'],
-    itemOperations: ['GET', 'PUT', 'PATCH', 'DELETE'],
+    itemOperations: [
+        'GET' => [
+            'normalization_context' => ['groups' => ['cheese:read', 'cheese:item:get']]
+        ],
+        'PUT',
+        'PATCH',
+        'DELETE'
+    ],
     shortName: 'Cheese',
     denormalizationContext: [
         'groups' => ['cheese:write'],
@@ -70,6 +78,8 @@ class CheeseListing
 
     #[ORM\ManyToOne(inversedBy: 'cheeseListings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['cheese:read', 'cheese:write'])]
+    #[Valid]
     private ?User $owner = null;
 
     public function __construct()

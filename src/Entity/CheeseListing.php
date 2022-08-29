@@ -14,6 +14,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: CheeseListingRepository::class)]
 #[ApiResource(
@@ -44,14 +46,19 @@ class CheeseListing
 
     #[ORM\Column(length: 255)]
     #[Groups(['cheese:read', 'cheese:write'])]
+    #[NotBlank]
+    #[Length(min: 3)]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['cheese:read'])]
+    #[NotBlank]
+    #[Length(min: 10)]
     private ?string $description = null;
 
     #[ORM\Column]
     #[Groups(['cheese:read', 'cheese:write'])]
+    #[NotBlank]
     private ?int $price = null;
 
     #[ORM\Column]

@@ -9,6 +9,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ApiResource(
     denormalizationContext: ['groups' => 'user:write'],
@@ -27,6 +30,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['user:read', 'user:write'])]
+    #[NotBlank]
+    #[Email]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -37,10 +42,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Groups(['user:write'])]
+    #[NotBlank]
     private ?string $password = null;
 
     #[ORM\Column(length: 255, unique: true)]
     #[Groups(['user:read', 'user:write'])]
+    #[NotBlank]
+    #[Length(min: 3, minMessage: 'Your username must have at least 3 characters')]
     private ?string $username = null;
 
     public function getId(): ?int

@@ -193,7 +193,22 @@ resource. This could only be possible if **persist cascade** is enabled.\
 the embedded relation is validated by adding the ``Valid`` constraint
 validator to our relation.**
 
-### Groups' naming convention
+## Collection create
+While creating a resource in a OneToMany relation with another resource,
+we can send an array of embedded object to update them when an IRI is
+provided xor to create them. In this last case, cascade persist must be
+enabled.
+
+## Removing items from a collection
+Given a resource related to many others. In a PUT or PATCH operation,
+unless we don't specify the embedded relation field, we must send back 
+all the related resources. This is because the missing ones will be
+detached causing error or removed from the database if ``orphanRemoval``
+is set to true.
+
+
+
+## Groups' naming convention
 - **user:item:get**: can be added to the user:read group to load more 
 data when we're loading an unique resource data 
 - **user:item:put**: can be defined alone on put operation in order 
@@ -201,7 +216,6 @@ to specify the group of properties that can be written on a put operation.
 - **user:item:patch**: same principe as for the put group
 - **user:read**: stand for user:collection:read; the basic read group
 - **user:write**: stand for user:collection:write; the basic write group
-
 
 
 

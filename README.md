@@ -130,17 +130,31 @@ A beautiful way to filter our data. It uses a (non-named arg) [Filter class](htt
 and generally the concerned properties:
 ````php 
 #[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'description' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'title' => 'partial', 
+    'description' => 'partial', 
+    'owner' => 'exact',
+    'owner.username' => 'partial'
+])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(PropertyFilter::class)]
 ````
 Most Filter classes are in the ``Doctrine/Orm`` namespace so 
 thanks to PHPStorm, we can even display all of them. Each of 
-them has a quick description of how they can be used.
+them has a quick description of how they can be used.\
+They can even be related to embedded resource as defined on our
+``SearchFilter`` above. We are here applying our search filter to
+the username of the embedded resource ``User`` and to the User IRI
+also. Yes, it's better to search by the IRI than by the ID.
 
 The **PropertyFilter** however is not in that namespace 
 and allow our api client to get only properties 
-it needs from those we make available.
+it needs from those we make available. Using it can lead us to such of
+link\
+[http://localhost/api/users/2?properties[]=username&properties[cheeseListing]\[\]=title](http://localhost/api/users/2?properties[]=username&properties[cheeseListing][]=title)\
+Here, username is our main resource property while title is an embedded resource
+property.
+
 
 ## Validation
 Validation and API Platform work exactly like in every Symfony app,
@@ -217,9 +231,11 @@ to specify the group of properties that can be written on a put operation.
 - **user:read**: stand for user:collection:read; the basic read group
 - **user:write**: stand for user:collection:write; the basic write group
 
-
-
-
+## [ApiSubresource]
+Applied to a relational attribute, it adds an endpoint to 
+get all the subresource. In this case, it's:\
+[http://localhost/api/users/{id}/cheese_listing](http://localhost/api/users/{id}/cheese_listing)\
+More information about [here](https://api-platform.com/docs/core/subresources/)
 
 
 

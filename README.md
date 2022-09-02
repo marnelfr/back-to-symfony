@@ -11,7 +11,7 @@ top of the entity.
 
 To display the data send by an api endpoint in a specific format (json, jsonld), 
 add the format as extension to the link ; otherwise, api_platform
-shows those data through the swagger's doc.\
+shows those data through its swagger's doc.\
 e.g.: [https://localhost/api/cheese_listings/2.jsonld](https://localhost/api/cheese_listings/2.jsonld)
 
 ## OpenAPI
@@ -33,7 +33,7 @@ In a Rest API, every resource is represented by an URL and should have its
 own identifier. That's why thanks to JsonLD, every resource has 
 the ``@id`` filed representing when concatenated to our API
 domain name, the unique identifier of our resource across the 
-entire internet: it's the **IRI** (Internationalized 
+whole internet: it's the **IRI** (Internationalized 
 Resource Identifier).
 
 ### @context
@@ -78,6 +78,32 @@ And each of them can be customized if transformed into a key
 with its config as value:\
 ``'GET' => ['path' => '/lov/de/{id}']``
 
+## Custom operation
+We can add custom operation to our api. Here any operation that
+require a resource id should be added as ``itemOperation``, otherwise,
+as ``collectionOperation``.
+````php
+#[ApiResource(
+    collectionOperations: [
+        'get',
+        'post',
+        'details' => [
+            'method' => 'get',
+            'path' => '/cheese/details',
+            'controller' => CheeseDetailsController::class, //invocable controller that just return data our endpoint need to return
+            'read' => false,
+            'defaults' => ['_api_receive' => false], //Requests to our endpoint won't need to send a body 
+            'normalization_context' => ['groups' => ['cheese:read', 'cheese:details']],
+            'openapi_context' => [
+                'summary' => "Returns details about the current user's cheeses",
+                'requestBody' => ['required' => false, 'content' => []] //To inform our api doc that request to our endpoint doesn't require body.
+            ]
+        ],
+    ]
+)]
+````
+
+
 ## Serializer
 It used to convert our resources from object to json before sending
 and from json to object before using them in our app.
@@ -92,9 +118,9 @@ by modifying our setters.
  
 ### Serialization groups
 The normalization is the process turning our resource into an
-array. Only the array got from that process is then convert
+array. Only the array got from that process is then converted
 into JSON and send to the client. So we can pass the **groups** 
-option to our **normalizationContext**. Henceforth, only field 
+option to our **normalizationContext**. Henceforth, only fields 
 in these group will be considered in the serialization process.
 Same thing can be done with **denormalizationContext**.\
 Even getters and setters can be added to a group.
@@ -115,7 +141,7 @@ private ?string $description = null;
 
 ## Constructor args
 Removing the setter of a property and adding it as a constructor
-arg make it **immutable** (can be set only once). We can make it
+arg makes it **immutable** (can be set only once). We can make it
 in our entities while using AP, but we should make sure that the 
 arg has the same name as the concerned property. Also, **making it 
 nullable is a good way to prevent a 400 error code when it's not sent**:
@@ -147,13 +173,13 @@ They can even be related to embedded resource as defined on our
 the username of the embedded resource ``User`` and to the User IRI
 also. Yes, it's better to search by the IRI than by the ID.
 
-The **PropertyFilter** however is not in that namespace 
+The **PropertyFilter** however is not in the ``Doctrine/Orm`` namespace 
 and allow our api client to get only properties 
 it needs from those we make available. Using it can lead us to such of
 link\
 [http://localhost/api/users/2?properties[]=username&properties[cheeseListing]\[\]=title](http://localhost/api/users/2?properties[]=username&properties[cheeseListing][]=title)\
-Here, username is our main resource property while title is an embedded resource
-property.
+Here, username is a property of our main resource while title is an 
+embedded resource property.
 
 
 ## Validation
@@ -162,7 +188,7 @@ and API Platform tacks care of the boring work of mapping serialization
 and validation value to a 400 status code and descriptive, consistence
 error response.\
 We then only need to add **[Validator/Constraints](https://symfony.com/doc/current/validation.html#supported-constraints)** to our classes'
-properties and let ap do the remaining work.
+properties and let AP do the remaining work.
 
 ## Embedded relation
 When we add a read group to a relation property, it only means that
@@ -174,7 +200,7 @@ we need in addition.\
 To get to that, we only need to add one of the main
 entity's read groups to those properties we want to preload.
 It's recommended to only preload embedded data when loading a single
-resource while we only the IRI of embedded relation when loading a
+resource while we only load the IRI of embedded relation when loading a
 collection. We then need to have a specific group for each case:
 ````php 
 #[ApiResource(
@@ -194,11 +220,11 @@ collection. We then need to have a specific group for each case:
 ````
 Since we personalized the ``itemOperations/GET`` saying we want to
 read in addition to properties having ``cheese:read`` group, those
-having the ``cheese:item:get`` group, we can the simply add this last
+having the ``cheese:item:get`` group, we can then simply add this last
 group to our embedded relations properties we want to preload. 
 
 ### Create/Update embedded relation's data
-By this same way, we can also add write group to our embedded relation's
+By this same way, we can also add write groups to our embedded relation's
 properties we want to be able to write while creating/updating our resource.
 However, in case we want to only update an embedded data, we must
 send its IRI. Otherwise, we're then trying to create a new embedded 
@@ -217,9 +243,8 @@ enabled.
 Given a resource related to many others. In a PUT or PATCH operation,
 unless we don't specify the embedded relation field, we must send back 
 all the related resources. This is because the missing ones will be
-detached causing error or removed from the database if ``orphanRemoval``
-is set to true.
-
+detached causing error or removed from the database if **cascade remove** 
+is enabled.
 
 
 ## Groups' naming convention
@@ -258,7 +283,7 @@ returned information
 - (formats: ['jsonld', 'html', 'json', 'csv' => ['text/csv']]):
 allow use to add as much format as we want. Always add default
 ones when we want to add a new one. Since we added the **CSV** format,
-we can then download our api response we such of link:
+we can then download our api response with such of link:
 [http://localhost/api/cheeses.csv?page=1](http://localhost/api/cheeses.csv?page=1)
 
 

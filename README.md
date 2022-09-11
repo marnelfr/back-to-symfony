@@ -232,5 +232,5 @@ Thanks to it, we can create a command using
 ``make:command app:talk-to-me`` for example where **app:talk-to-me**
 is the name of our command.
 
-## (Doctrine)[https://github.com/marnelfr/back-to-symfony/tree/overflow#doctrine]
-Let continue with doctrine (here)[https://github.com/marnelfr/back-to-symfony/tree/overflow#doctrine]
+## [Doctrine](https://github.com/marnelfr/back-to-symfony/tree/overflow#doctrine)
+Let continue with doctrine [here](https://github.com/marnelfr/back-to-symfony/tree/overflow#doctrine)

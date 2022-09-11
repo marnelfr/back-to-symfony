@@ -114,16 +114,12 @@ We can use the twitter_bootstrap5 view if we install the twig function
 using ``composer req pagerfanta/twig``
 
 
-# [API Platform](https://github.com/marnelfr/symfony-demo/blob/apiplatform/README.md)
-
-
 ## [Testing](https://symfony.com/doc/current/testing.html)
 Installation: ``composer req test --dev``\
-I've got to install [LiipTestFixturesBundle](https://github.com/liip/LiipTestFixturesBundle) as well: 
-``composer require --dev liip/test-fixtures-bundle:^2.0.0`` and 
+I've got to install [LiipTestFixturesBundle](https://github.com/liip/LiipTestFixturesBundle) as well:
+``composer require --dev liip/test-fixtures-bundle:^2.0.0`` and
 enable the Bundle [only in the test environment](https://github.com/liip/LiipTestFixturesBundle/blob/2.x/doc/installation.md)
 
 
-
-
+# [API Platform](https://github.com/marnelfr/symfony-demo/blob/apiplatform/README.md)
 

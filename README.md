@@ -1,6 +1,6 @@
 # Symfony 6
 ## Bundles
-Bundle are Symfony plugins. They're normal PHP packages,
+Bundles are Symfony plugins. They're normal PHP packages,
 except that they plug in into Symfony. And the main 
 thing they give are services.
 They register some PHP classes they come with 
@@ -10,16 +10,16 @@ automatically in ``config/bundles.php``
 
 ## UX Turbo
 Installation: ``composer req symfony/ux-turbo``\
-Turns our app into an single page app. Every request is 
-then make by ajax.
+Turns our app into a single page app. Every request is 
+then made by ajax.
 
 ## Debug
 - ``php bin/console debug:autowiring`` returns the list 
 of every classes that can be autowired.
 - ``php bin/console router:match /api/song/1 --method=get``
-  check if there is any route that match the provided one.
-- ``php bin/console debug:twig`` print the list of every 
-functions, filters, tests and global variable in twig.
+  checks if there is any route that match the provided one.
+- ``php bin/console debug:twig`` prints the list of every 
+function, filter, test and global variable in twig.
 
 ## KnpTimeBundle
 Installation: ``composer require knplabs/knp-time-bundle``\
@@ -28,8 +28,7 @@ function that returns friendly "2 hours ago"-type messages.
 
 ## Http Client
 Installation: ``composer req symfony/http-client``\
-Need to perform some requests, this library is there 
-for you.\
+This library is there, if we need to perform some requests.\
 Once the library is installed, the **FrameworkBundle
 registers a service** called **HttpClientInterface** which uses 
 a PHP class from ``symfony/http-client``.
@@ -56,7 +55,7 @@ with ``cache:pool:clear cache.app``
 
 
 ## Bundle configuration
-We can control how bundles configure its services through config 
+We can control how bundles configure their services through config 
 files in the ``/config/packages`` directory.
 Each of them config a service related to its root key.
 - ``debug:config bundle_alias`` shows all the current configuration 
@@ -74,14 +73,14 @@ The container only instantiate a given service once during a request.
 The service maybe asked several time, it'll be instantiated once and 
 the container will return the same one instance.\
 However, every service in the container is not autowireable. Those
-who actually are can be display by the command ``debug:autowiring``.
+who actually are can be displayed by the command ``debug:autowiring``.
 
 ## Environments
 We have three environments in symfony: prod, dev, and test.
 At the entry point of our app, the Kernel is instantiated with our
 environment and the debug mode.\
 Base on that, our config files are loaded.
-We can have 3 types of config for each environment.
+We can have 3 type of config, one for each environment.
 The default config is loaded and then overwrite by the configuration 
 of our environment.
 
@@ -90,7 +89,7 @@ of our environment.
 public function __construct(
     private HttpClientInterface $client, 
     private CacheInterface $cache
-) {}
+){}
 ````
 Starting with Symfony 6.1, we can set our non-autowireable 
 arguments this way:
@@ -120,7 +119,7 @@ services:
     App\Service\MixRepository:
         bind:
             $isDebug: '%kernel.debug%'
-            'bool $isDebug': '%kernel.debug%'
+            'bool $isDebug': '%kernel.debug%' //type precision
 ````
 However, instead of completely overwriting the MixRepository
 service, we could ``bind`` the ``$isDebug`` variable to every 
@@ -155,7 +154,7 @@ having a particular behavior like using a ``base-uri`` for example.
 
 **Named autowireable** services have a specific name in the 
 ``debug:autowiring`` list. To use them and benefit everything 
-their bring, they must be injected with their name. 
+they bring, they must be injected with their name. 
 
 
 ## Non-autowireable services
@@ -187,7 +186,8 @@ dd($output);
 They can be used to keep secret our token and other config 
 variables. They are set in the ``.env`` file that Symfony reads
 when it boots up to turn all of them into environment variables.\
-[Been trying this and it doesn't work ->] However, if we've got a real env variable in our system with the
+[Been trying this and it doesn't work ->] However, if we've got a 
+real env variable in our system with the
 same name, that real env variable would win over the one in the 
 ``.env`` file.
 
@@ -215,11 +215,12 @@ and another for the **prod** environment.\
 The secrets vault has for each environment, 
 - a ``list.php`` file that stores a list of which 
 values live inside the vault, 
-- a ``encrypt.public.php`` file containing a cryptographic key that's
+- a ``encrypt.public.php`` file containing a cryptographic key that
 is used to add more secrets,
 - a set of files that contains our secrets' encrypted values,
 - a ``decrypt.private.php`` file containing the secret key to decrypt 
-  and read the values in the vault. **This last file of the prod vault shouldn't be committed.** 
+  and read the values in the vault.
+**This last file of the prod vault shouldn't be committed.** 
 
 **Secrets** act like our env vars but if set, env vars values win.\
 So dev secrets should contain our real key that should be set locally
@@ -228,9 +229,9 @@ using ``secrets:set VAR_NAME --local``
 
 ## Maker bundle
 Installation: ``composer req maker --dev``
-Thanks to it, we can create a command using 
-``make:command app:talk-to-me`` for example where **app:talk-to-me**
+Thanks to it, we can create our component, for example a command using 
+``make:command app:talk-to-me`` where **app:talk-to-me**
 is the name of our command.
 
 ## [Doctrine](https://github.com/marnelfr/back-to-symfony/tree/overflow#doctrine)
-Let continue with doctrine [here](https://github.com/marnelfr/back-to-symfony/tree/overflow#doctrine)
+Let's continue with doctrine [here](https://github.com/marnelfr/back-to-symfony/tree/overflow#doctrine)

@@ -121,5 +121,5 @@ I've got to install [LiipTestFixturesBundle](https://github.com/liip/LiipTestFix
 enable the Bundle [only in the test environment](https://github.com/liip/LiipTestFixturesBundle/blob/2.x/doc/installation.md)
 
 
-# [API Platform](https://github.com/marnelfr/symfony-demo/blob/apiplatform/README.md)
+# [API Platform](https://github.com/marnelfr/back-to-symfony/tree/api-platform-2#api-platform)
 

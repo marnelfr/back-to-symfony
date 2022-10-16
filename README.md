@@ -14,6 +14,26 @@ Talking about security, there are two big parts:
   It's all about allowing or denying access to different things,
   like different URLs or controllers.
 
+## The User
+No matter what security system we're using, we need what will be 
+authenticated: our user class.
+The default provider used is ``users_in_memory`` when we add our 
+security system.\
+``make:user`` can help us to add 
+- our user entity class,
+- our user repository
+- and our user provider and update our main security firewalls to use it.\
+The user provider is an object that knows how to load our user objects... 
+whether we're loading them from an API or from a database.
+
+The user class implement the ``Symfony\Component\Security\Core\User\UserInterface``
+which has mainly three methods:
+This interface really has just 3 methods: 
+- ``getUserIdentifier()``: that returns a visual identifier representing the user, 
+- ``getRoles()``: deals with permissions 
+- ``eraseCredentials()``: used to clear temporary and sensitive data stored on the user.
+
+
 
 
 

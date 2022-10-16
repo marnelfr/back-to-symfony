@@ -1,6 +1,6 @@
 ## Doctrine
 - ``doctrine:query:sql "select * from questions"`` used to 
-make request to the database base.
+query the database base.
 - ``doctrine:migration:list`` displays the list of migrations 
 and their status
 - ``throw $this->createNotFoundException($message)`` can be 
@@ -63,8 +63,8 @@ the length of the collection before using its properties.
 a collection get from a doctrine relation.
 
 ### Getter usage
-Don't hesitate to use and entity getter to simplify codes. 
-Methods like ``$answer->isApproved()``, 
+Don't hesitate to use an entity getter to simplify codes. 
+Methods like ``$answer->isApprovedAnswer()``, 
 ``$questions->getApprovedAnswers()`` should be added and used 
 instead of only using the provided ``$questions->getAnswers()``.
 

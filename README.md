@@ -44,7 +44,7 @@ information that it understands (like a submitted email and password, or
 an API key that's stored on a header) and if there is, use that to query 
 the user and check the password. If all that happens successfully then, 
 the authentication complete, so the request can proceed.\
-All of this happens thanks to the ``security.firewalls`` configuration.\
+All of this happens base on the ``security.firewalls`` configuration.\
 
 At the start of each request, Symfony goes down the list of firewalls, 
 reads the pattern key (which is a regular expression) and finds the first 
@@ -59,8 +59,8 @@ it'll match all requests that don't match the dev firewall.
 ``security.firewalls.main.lazy: true`` allows the authentication system
 to not authenticate the user until it needs to.
 
-The ``make:auth`` command, can be used create an **Empty authenticator**; it
-updates our ``security.yaml`` file to use it hence the 
+The ``make:auth`` command, can be used to create an **Empty authenticator** and then
+update our ``security.yaml`` file to use it hence the 
 ``security.firewalls.main.custom_authenticator``.
 
 The only rule about an authenticator is that it needs to implement 
@@ -73,12 +73,49 @@ Symfony will then call its ``supports()`` method to check authentication
 information within it.
 
 It almost never makes sense to have two firewalls... even if you have two different
-ways to authenticate. This should be moved to one firewall. 
+ways to authenticate, this should be moved to one firewall.
 The exception to that rule is if you have, for example, a frontend that has one 
 User class and an API under ``/api/`` where, if you log in, you will be logged in 
 as a completely different user class - e.g. ``ApiUser``.
 
+### The supports() method
+It then returns ``true`` if this request "contains authentication 
+info that we know how to process". If not, we return ``false``. If we 
+return ``false``, we don't fail authentication: it just means that our 
+authenticator doesn't know how to authenticate this request and the 
+request continues processing like normal executing whatever controller it matches.\
+Here, we're in this case if the current request is a POST to ``/login`` path, so:
+````injectablephp
+public function supports(Request $request): ?bool
+{
+    return $request->getPathInfo() === '/login' && $request->isMethod('POST');
+}
+````
+In case ``supports()`` returns ``true``, the ``authenticate()`` method is called.
 
+### The authenticate() method
+It's the heart of our authenticator. Its job is to communicate two important thinkgs:
+- who the user is that's trying to log in (which User object they are)
+- some proof tht they are this user; in the case of a login, a password.
 
-
-
+These two things are communicate by returning a ``Password`` object.
+It says who the user is, identified by 
+- their email ``new UserBadge($email)``. Here, ``UserBadge`` can take a callback as
+second argument that receive the $userIdentifier ($email in our case) as argument 
+and must return a UserInterface object. If this is not set, the default user provider 
+will be used with $userIdentifier as username.
+- and some sort of a "credentials process" that will prove that the user is who they 
+say they are.
+````injectablephp
+public function authenticate(Request $request): Passport
+{
+    $email = $request->request->get('email');
+    $password = $request->request->get('password');
+    return new Passport(
+        new UserBadge($email),
+        new CustomCredentials(function($credential, User $user) {
+            dd($credential, $user);
+        }, $password)
+    );
+}
+````
